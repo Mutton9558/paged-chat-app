@@ -4,7 +4,6 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.text.Font;
 import javafx.scene.transform.Scale;
 import javafx.stage.Stage;
 import java.io.IOException;
@@ -24,10 +23,6 @@ public class UserInterface extends Application {
         return instance;
     }
 
-    public void updateStatus(String message) {
-        System.out.println("Update Status: " + message);
-    }
-
     @Override
     public void start(Stage primaryStage) {
         AppEngine engine = new AppEngine();
@@ -35,8 +30,9 @@ public class UserInterface extends Application {
         System.out.println("This is JavaFX UI thread");
 
         this.primaryStage = primaryStage;
-        this.primaryStage.setMinHeight(400);
-        this.primaryStage.setMinWidth(600);
+        this.primaryStage.setMinHeight(550);
+        this.primaryStage.setMinWidth(650);
+        this.primaryStage.setMaximized(true);
 
         showMainUI(false);
     }

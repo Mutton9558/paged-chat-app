@@ -6,44 +6,98 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.TextField?>
-
 <?import javafx.scene.text.TextFlow?>
 <?import javafx.scene.control.Hyperlink?>
+<?import javafx.geometry.Insets?>
+
 <AnchorPane stylesheets="@onboarding.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="desktop.MainController">
    <StackPane layoutX="5.0" layoutY="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-      <VBox alignment="CENTER" style="-fx-background-color: #e4e4e4; -fx-border-color: #0000; -fx-spacing: 25.0">
+      <VBox StackPane.alignment="CENTER" alignment="CENTER" maxHeight="-Infinity" maxWidth="600" style="-fx-background-color: #e4e4e4; -fx-border-color: #0000; -fx-spacing: 25.0; -fx-background-radius: 10.0; -fx-padding: 60 40 40 40;">
          <StackPane>
             <!-- Welcome Message -->
             <VBox id="OnboardingVBox">
                <Label id="WelcomeText" text="Welcome to Paged!" />
                <Label id="GreetingsLabel" layoutY="30.0" text="Good to see you! Can't wait to chat with you!" />
+               <Label fx:id="SignupText" layoutY="30.0" text="Create Your Account" visible="false" managed="false"/>
             </VBox>
          </StackPane>
+         
          <VBox fx:id="LoginForm">
             <Label text="Phone Number or email" />
-            <TextField promptText="Phone number or email"/>
+            <TextField promptText="Phone number or email">
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin>
+            </TextField>
+
             <Label text="Password" />
             <TextField promptText="Password"/>
+
+            <Hyperlink onAction="#ShowForgotPassword" text="Forgot password?" />
+            <TextFlow>
+               <Label text="Don't have an account? " />
+               <Hyperlink onAction="#ShowSignup" text="Create one!" />
+            </TextFlow>
+            
             <VBox alignment="CENTER" style="-fx-spacing: 10.0">
-               <TextFlow>
-                  <Label text="Don't have an account? " />
-                  <Hyperlink onAction="#handleShowSignup" text="Create one!" />
-               </TextFlow>
                <Button contentDisplay="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#handleOnboardingClick" text="Log In" />
             </VBox>
          </VBox>
+
          <VBox fx:id="SignupForm" visible="false" managed="false">
-            <Label text="Create Your Account"/>
-            <TextField promptText="Your Name"/> 
-            <TextField promptText="Phone number or email"/>
-            <TextField promptText="Password"/>
+            <Label text="Your Name"/>
+            <TextField promptText="Your Name">
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin>
+            </TextField>
+
+            <Label text="Phone number"/>
+            <TextField promptText="Phone number">
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin>
+            </TextField>
+
+            <Label text="Email Address"/>
+            <TextField promptText="Email Address">
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin>
+            </TextField>
+
+            <Label text="Password"/>
+            <TextField promptText="Password">
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin>
+            </TextField>
+
+            <TextFlow>
+               <Label text="Have an account? " />
+               <Hyperlink onAction="#ShowLogin" text="Login now!" />
+            </TextFlow>
 
             <VBox alignment="CENTER" style="-fx-spacing: 10.0">
-               <TextFlow>
-                  <Label text="Have an account? " />
-                  <Hyperlink onAction="#handleShowLogin" text="Login now!" />
-               </TextFlow>
                <Button contentDisplay="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#handleOnboardingClick" text="Sign Up" />
+            </VBox>
+         </VBox>
+
+         <VBox fx:id="ForgotPasswordForm" visible="false" managed="false" style="-fx-spacing: 10.0">
+            <Label text="Enter your email or phone number to reset your password"/>
+            <TextField promptText="Email or phone number">
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin>
+            </TextField>
+
+            <TextFlow>
+               <Label text="Remembered your password? " />
+               <Hyperlink onAction="#ShowLogin" text="Login now!" />
+            </TextFlow>
+
+            <VBox alignment="CENTER" style="-fx-spacing: 10.0">
+               <Button contentDisplay="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#handleOnboardingClick" text="Reset Password" />
             </VBox>
          </VBox>
       </VBox>
