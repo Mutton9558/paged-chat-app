@@ -12,6 +12,7 @@ import java.util.Comparator;
 import java.util.stream.Collectors;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 class Recipient{
     protected int id;
@@ -210,25 +211,49 @@ class ClassGlobalVariables{
     }
 }
 
-class WorkerThread implements Runnable{
+class NetworkThread implements Runnable{
+    private final BlockingQueue<Runnable> OutgoingMessageRequests = new LinkedBlockingQueue<>();
+    
+    public void submit(Runnable messageReq) {
+        OutgoingMessageRequests.offer(messageReq);
+    }
 
-    private final BlockingQueue<Runnable> taskQueue = new LinkedBlockingQueue<>();
+    @Override
+    public void run(){
+        // get socket from server
+        while(true){
+            try{
+                // check socket
+                Runnable messageRequest = OutgoingMessageRequests.poll(50, TimeUnit.MILLISECONDS);
+                if(messageRequest != null){
+                    messageRequest.run();
+                }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                break;
+            }
+        }
+    }
+}
+
+class UpdaterThread implements Runnable{
+
+    private final BlockingQueue<Runnable> PersistentEventQueue = new LinkedBlockingQueue<>();
 
     public void submit(Runnable task) {
-        taskQueue.offer(task);
+        PersistentEventQueue.offer(task);
     }
 
     @Override
     public void run(){
         while(true){
             try{
-                Runnable task = taskQueue.take();
+                Runnable task = PersistentEventQueue.take();
                 task.run();
             } catch (InterruptedException e){
                 Thread.currentThread().interrupt();
                 break;
             }
-            System.out.println("This is the network thread");
         }
     }
 }
