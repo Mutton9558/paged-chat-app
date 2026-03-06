@@ -10,6 +10,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.Comparator;
 import java.util.stream.Collectors;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 class Recipient{
     protected int id;
@@ -208,45 +210,25 @@ class ClassGlobalVariables{
     }
 }
 
+class WorkerThread implements Runnable{
 
-// This thread sends messages to clients on our P2P network
-class NetworkThread extends Thread{
+    private final BlockingQueue<Runnable> taskQueue = new LinkedBlockingQueue<>();
+
+    public void submit(Runnable task) {
+        taskQueue.offer(task);
+    }
+
+    @Override
     public void run(){
-        System.out.println("This is the network thread");
-
-        while(!ClassGlobalVariables.userFetched.get()){
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
+        while(true){
+            try{
+                Runnable task = taskQueue.take();
+                task.run();
+            } catch (InterruptedException e){
                 Thread.currentThread().interrupt();
+                break;
             }
+            System.out.println("This is the network thread");
         }
     }
 }
-
-// This thread will be in charge of db + cache update
-class UpdateThread extends Thread{
-    public void run(){
-        System.out.println("This is the update thread");
-
-        // wait for user information from ui
-
-        // pulls item from db
-        ClassGlobalVariables.userFetched.set(true);
-
-        // Check if UI is alive before calling it
-
-    }
-}
-
-// public class Main{
-//     public static void main(String[] args){
-//         // Two threads, one networking and one db & cache update
-//         Thread network = new NetworkThread();
-//         Thread updater = new UpdateThread();
-
-//         network.start();
-//         updater.start();
-
-//     }
-// }
