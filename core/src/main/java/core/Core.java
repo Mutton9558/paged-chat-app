@@ -10,6 +10,9 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.Comparator;
 import java.util.stream.Collectors;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 class Recipient{
     protected int id;
@@ -208,45 +211,49 @@ class ClassGlobalVariables{
     }
 }
 
+class NetworkThread implements Runnable{
+    private final BlockingQueue<Runnable> OutgoingMessageRequests = new LinkedBlockingQueue<>();
+    
+    public void submit(Runnable messageReq) {
+        OutgoingMessageRequests.offer(messageReq);
+    }
 
-// This thread sends messages to clients on our P2P network
-class NetworkThread extends Thread{
+    @Override
     public void run(){
-        System.out.println("This is the network thread");
-
-        while(!ClassGlobalVariables.userFetched.get()){
-            try {
-                Thread.sleep(1000);
+        // get socket from server
+        while(true){
+            try{
+                // check socket
+                Runnable messageRequest = OutgoingMessageRequests.poll(50, TimeUnit.MILLISECONDS);
+                if(messageRequest != null){
+                    messageRequest.run();
+                }
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
+                break;
             }
         }
     }
 }
 
-// This thread will be in charge of db + cache update
-class UpdateThread extends Thread{
+class UpdaterThread implements Runnable{
+
+    private final BlockingQueue<Runnable> PersistentEventQueue = new LinkedBlockingQueue<>();
+
+    public void submit(Runnable task) {
+        PersistentEventQueue.offer(task);
+    }
+
+    @Override
     public void run(){
-        System.out.println("This is the update thread");
-
-        // wait for user information from ui
-
-        // pulls item from db
-        ClassGlobalVariables.userFetched.set(true);
-
-        // Check if UI is alive before calling it
-
+        while(true){
+            try{
+                Runnable task = PersistentEventQueue.take();
+                task.run();
+            } catch (InterruptedException e){
+                Thread.currentThread().interrupt();
+                break;
+            }
+        }
     }
 }
-
-// public class Main{
-//     public static void main(String[] args){
-//         // Two threads, one networking and one db & cache update
-//         Thread network = new NetworkThread();
-//         Thread updater = new UpdateThread();
-
-//         network.start();
-//         updater.start();
-
-//     }
-// }
