@@ -21,7 +21,9 @@
                                 </graphic>
                             </Button>
                         </HBox>
-                        <TextField id="ChatSearch" promptText="Search" />
+                        <TextField fx:id="ChatSearch" promptText="Search" />
+                        <VBox fx:id="chatList">
+                        </VBox>
                     </VBox>
                     <VBox id="MessageList" alignment="CENTER" HBox.hgrow="ALWAYS">
                         <Label text="Message List Goes Here" />

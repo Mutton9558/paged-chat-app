@@ -5,19 +5,22 @@
 .root {
     -fx-font-family: 'Inter', sans-serif;
     accentColor: #DFA39D;
+    buttonColor: #C9728A;
+    accentColorhover: #C7928B;
+    buttonColorhover: #B06479;
 }
 
-Button {
+.button {
     -fx-padding: 10 20 10 20;
     -fx-effect: none;
     -fx-background-radius: 25px;
-    -fx-background-color: #aeaeae;
+    -fx-background-color: buttonColor;
     -fx-cursor: hand;
     -fx-transition: -fx-background-color 0.3s ease, -fx-font-weight 0.3s ease;
 }
 
-Button:hover {
-    -fx-background-color: #8e8e8e;
+.button:hover {
+    -fx-background-color: buttonColorhover;
     -fx-font-weight: bold;
 }
 
@@ -72,3 +75,37 @@ TextFlow {
     -fx-background-radius: 10.0;
 }
 
+.chat-tab {
+    -fx-background-color: accentColor;
+    -fx-padding: 15;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+}
+
+.chat-tab:hover {
+    -fx-background-color: accentColorhover;
+}
+
+.chatProfile {
+    -fx-background-color: black;
+    -fx-min-width: 40px;
+    -fx-min-height: 40px;
+    -fx-max-width: 40px;
+    -fx-max-height: 40px;
+    -fx-background-radius: 20px;
+}
+
+.nameLabel {
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+}
+
+.timeLabel {
+    -fx-text-fill: #555555;
+    -fx-font-size: 11px;
+}
+
+.messageLabel {
+    -fx-text-fill: #555555;
+    -fx-font-size: 12px;
+}
