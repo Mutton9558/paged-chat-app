@@ -25,8 +25,8 @@ public class UserInterface extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        AppEngine engine = new AppEngine();
-        engine.start();
+        // AppEngine engine = new AppEngine();
+        // engine.start();
         System.out.println("This is JavaFX UI thread");
 
         this.primaryStage = primaryStage;
