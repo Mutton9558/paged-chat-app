@@ -27,7 +27,7 @@
                     </VBox>
                     <VBox styleClass="MessageList" alignment="TOP_CENTER" HBox.hgrow="ALWAYS">
                         <HBox styleClass="MessageListHeader" prefHeight="55" minWidth="-Infinity" alignment="CENTER_LEFT">
-                            <Button id="closeButtonMessageList">
+                            <Button fx:id="closeButtonMessageList" onAction="#closeButtonMessageListClick">
                                 <graphic>
                                     <FontIcon iconLiteral="mdi2c-close" iconSize="16" />
                                 </graphic>
@@ -42,9 +42,9 @@
                         <Region VBox.vgrow="ALWAYS"/>
                         <HBox styleClass="messageListFooter" alignment="CENTER_LEFT">
                             <TextField fx:id="enterChatBar" promptText="I hate myself" minHeight="50" minWidth="-Infinity" prefWidth="820" />
-                            <Button id="sendAudioButton" >
+                            <Button fx:id="sendAudioButton" onAction="#sendAudioButtonClick">
                                 <graphic>
-                                    <FontIcon iconLiteral="mdi2s-send" iconSize="16" />
+                                    <FontIcon iconLiteral="mdi2m-microphone" iconSize="16" />
                                 </graphic>
                             </Button>
                         </HBox>

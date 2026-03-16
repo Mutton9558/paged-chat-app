@@ -4,6 +4,7 @@ import org.kordamp.ikonli.javafx.FontIcon;
 
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
@@ -32,6 +33,10 @@ public class MainController {
     private Label ForgotPasswordText;
     @FXML
     private VBox chatList;
+    @FXML
+    private Button closeButtonMessageList;
+    @FXML 
+    private Button sendAudioButton;
 
     /* Onboarding functions */
     @FXML
@@ -88,6 +93,18 @@ public class MainController {
         }
     }
 
+    @FXML 
+    private void closeButtonMessageListClick() {
+        System.out.println("Close Button was clicked");
+
+
+    }
+
+    @FXML 
+    private void sendAudioButtonClick() {
+        System.out.println("Send Button was clicked");
+        
+    }
 
     private void loadDummyChatList() {
         String[] dummyNames = {"Jasmine Joseph", "Adrian Buttowski", "Alex Burrow", "Meeting at 5!", "Besties!", "Adam <3"};
