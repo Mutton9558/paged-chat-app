@@ -6,6 +6,9 @@ import java.util.Collections;
 import java.io.File;
 import java.util.UUID;
 import java.io.IOException;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -55,9 +58,39 @@ public class AppEngine {
 
     public void loginUser(String username, String password){
         if(!this.activeSession){
-            // get user id
-            // get jwt from server
-            generateDeviceID();
+            if(this.deviceId == null){
+                generateDeviceID();
+            }
+
+            try{
+                HttpClient client = HttpClient.newHttpClient();
+
+                String json = String.format("""
+                        {
+                            "username": "%s",
+                            "password": %s,
+                            "deviceID": %s
+                        }
+                """, username, password, this.deviceId);
+                // switch later
+                HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:3000/login"))
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(json))
+                .build();
+
+                HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+                ObjectMapper mapper = new ObjectMapper();
+
+                LoginResponse serverRes = mapper.readValue(response.body(), LoginResponse.class);
+                this.userId = serverRes.getUserID();
+                this.jwt = serverRes.getJwt();
+            } catch (IOException e){
+                System.out.println(e);
+            } catch (InterruptedException e){
+                System.out.println(e);
+            }
             createConfig();
             createSocket();
         }
@@ -67,10 +100,11 @@ public class AppEngine {
         try{
             if(configFile.exists()){
                 UserConfig config = mapper.readValue(configFile, UserConfig.class);
-                if(!(config.userId == null)){
-                    this.userId = config.userId;
-                    this.deviceId = config.deviceId;
-                    this.jwt = config.jwtToken;
+                String configUserId = config.getUserId();
+                if(!(configUserId == null)){
+                    this.userId = configUserId;
+                    this.deviceId = config.getDeviceId();
+                    this.jwt = config.getToken();
                 }
             }
         } catch (IOException e){

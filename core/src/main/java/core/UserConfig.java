@@ -3,14 +3,15 @@ package core;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class UserConfig {
+
     @JsonProperty("userId")
-    public String userId;
+    private final String userId;
 
     @JsonProperty("deviceId")
-    public String deviceId;
+    private final String deviceId;
 
     @JsonProperty("jwtToken")
-    public String jwtToken;
+    private final String jwtToken;
 
     public UserConfig(){
         this.userId = null;
@@ -23,4 +24,8 @@ public class UserConfig {
         this.deviceId = deviceId;
         this.jwtToken = jwtToken;
     }
+
+    public String getUserId() { return userId; }
+    public String getDeviceId() { return deviceId; }
+    public String getToken() { return jwtToken; }
 }
