@@ -1,16 +1,18 @@
 package desktop;
 
+import org.kordamp.ikonli.javafx.FontIcon;
+
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.VBox;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.StackPane;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import org.kordamp.ikonli.javafx.FontIcon;
 
 public class MainController {
 
@@ -31,6 +33,10 @@ public class MainController {
     private Label ForgotPasswordText;
     @FXML
     private VBox chatList;
+    @FXML
+    private Button closeButtonMessageList;
+    @FXML 
+    private Button sendAudioButton;
 
     /* Onboarding functions */
     @FXML
@@ -85,6 +91,19 @@ public class MainController {
             loadDummyChatList();
             setupSearchFilter();
         }
+    }
+
+    @FXML 
+    private void closeButtonMessageListClick() {
+        System.out.println("Close Button was clicked");
+
+
+    }
+
+    @FXML 
+    private void sendAudioButtonClick() {
+        System.out.println("Send Button was clicked");
+        
     }
 
     private void loadDummyChatList() {

@@ -25,8 +25,29 @@
                         <VBox fx:id="chatList">
                         </VBox>
                     </VBox>
-                    <VBox id="MessageList" alignment="CENTER" HBox.hgrow="ALWAYS">
-                        <Label text="Message List Goes Here" />
+                    <VBox styleClass="MessageList" alignment="TOP_CENTER" HBox.hgrow="ALWAYS">
+                        <HBox styleClass="MessageListHeader" prefHeight="55" minWidth="-Infinity" alignment="CENTER_LEFT">
+                            <Button fx:id="closeButtonMessageList" onAction="#closeButtonMessageListClick">
+                                <graphic>
+                                    <FontIcon iconLiteral="mdi2c-close" iconSize="16" />
+                                </graphic>
+                            </Button>
+                            <Button id="profileBanner" >
+                                <graphic>
+                                    <FontIcon iconLiteral="mdi2a-account" iconSize="16" />
+                                </graphic>
+                                Placeholder Text
+                            </Button>
+                        </HBox>
+                        <Region VBox.vgrow="ALWAYS"/>
+                        <HBox styleClass="messageListFooter" alignment="CENTER_LEFT">
+                            <TextField fx:id="enterChatBar" promptText="I hate myself" minHeight="50" minWidth="-Infinity" prefWidth="820" />
+                            <Button fx:id="sendAudioButton" onAction="#sendAudioButtonClick">
+                                <graphic>
+                                    <FontIcon iconLiteral="mdi2m-microphone" iconSize="16" />
+                                </graphic>
+                            </Button>
+                        </HBox>
                     </VBox>
                     <VBox id="RecipientInfo" alignment="CENTER" visible="false">
                         <Label text="Recipient Information and Attachments Go Here" />
