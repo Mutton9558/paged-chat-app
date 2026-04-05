@@ -224,7 +224,7 @@ public class AppEngine {
                 "SenderId", this.userId
             );
 
-            String jsonReq = objectMapper.writeValueAsString(encryptedItems);
+            String jsonReq = encryptedMapping.writeValueAsString(encryptedItems);
             HttpRequest req = HttpRequest.newBuilder()
             // temp URL
             .uri(URI.create("http://localhost:3000/send_message"))
@@ -232,7 +232,7 @@ public class AppEngine {
             .POST(HttpRequest.BodyPublishers.ofString(jsonReq))
             .build();
 
-            HttpResponse<String> res = client.send(req, HttpResponse.BodyHandlers.ofString());
+            HttpResponse<String> res = sender.send(req, HttpResponse.BodyHandlers.ofString());
 
             if(res.statusCode() == 200){
                 System.out.println("Message sent successfully!");
