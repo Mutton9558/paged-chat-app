@@ -2,10 +2,10 @@ package core;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class GetSessionResponse {
+public class GetStatusResponse {
     private final String status;
 
-    public GetSessionResponse(@JsonProperty("status") String status){
+    public GetStatusResponse(@JsonProperty("status") String status){
         this.status = status;
     }
 
