@@ -1,13 +1,13 @@
 package desktop;
-import javafx.application.Application;
-import javafx.application.Platform;
+import javafx.application.*;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.transform.Scale;
+import javafx.scene.*;
+import javafx.scene.layout.StackPane;
+import javafx.scene.text.Font;
+import javafx.scene.transform.*;
 import javafx.stage.Stage;
-import java.io.IOException;
-import java.util.Objects;
+import java.io.*;
+import java.util.*;
 import core.AppEngine;
 
 // This is where most of the UI is handled
@@ -15,6 +15,7 @@ public class UserInterface extends Application {
 
     private static UserInterface instance;
     private Stage primaryStage;
+    private StackPane mainContainer;
 
     public UserInterface() {
         instance = this;
@@ -32,9 +33,21 @@ public class UserInterface extends Application {
         this.primaryStage = primaryStage;
         this.primaryStage.setMinHeight(550);
         this.primaryStage.setMinWidth(650);
+
+        mainContainer = new StackPane();
+        Scene mainScene = new Scene(mainContainer);
+
+        String cssPath = Objects.requireNonNull(getClass().getResource("/desktop/styles.css")).toExternalForm();
+        mainScene.getStylesheets().add(cssPath);
+
+        Font.loadFont(getClass().getResourceAsStream("/desktop/fonts/Inter-Regular.ttf"), 14);
+        Font.loadFont(getClass().getResourceAsStream("/desktop/fonts/Inter-Bold.ttf"), 14);
+
+        this.primaryStage.setScene(mainScene);
         this.primaryStage.setMaximized(true);
 
         showMainUI(false);
+        this.primaryStage.show();
     }
 
     public void showLoadingScreen() {
@@ -43,9 +56,7 @@ public class UserInterface extends Application {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("loading.fxml"));
                 Parent root = loader.load();
 
-                if (primaryStage != null && primaryStage.getScene() != null) {
-                    primaryStage.getScene().setRoot(root);
-                }
+                mainContainer.getChildren().setAll(root);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -65,22 +76,10 @@ public class UserInterface extends Application {
                 scale.setPivotY(0);
                 root.getTransforms().add(scale);
 
-                primaryStage.setWidth(primaryStage.getWidth() * scaleFactor);
-                primaryStage.setHeight(primaryStage.getHeight() * scaleFactor);
+                mainContainer.getChildren().setAll(root);
 
-                Stage stageToUse = (instance != null && instance.primaryStage != null) ? instance.primaryStage : primaryStage;
-
-                // If the stage is not initialized yet, create a new one
-                if (stageToUse != null) {
-                    Scene scene = new Scene(root);
-                    stageToUse.setScene(scene);
-
-                    // Load CSS
-                    String cssPath = Objects.requireNonNull(getClass().getResource("/desktop/styles.css")).toExternalForm();
-                    scene.getStylesheets().add(cssPath);
-
-                    stageToUse.setTitle("Paged - " + (loggedIn ? "Chat" : "Onboarding"));
-                    stageToUse.show();
+                if (primaryStage != null) {
+                    primaryStage.setTitle("Paged - " + (loggedIn ? "Chat" : "Onboarding"));
                 }
             } catch (IOException e) {
                 System.err.println("Failed to load FXML: " + fxmlFile + e.getMessage());
@@ -88,6 +87,5 @@ public class UserInterface extends Application {
             }
         });
     }
-
 
 }
